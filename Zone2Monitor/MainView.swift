@@ -36,8 +36,8 @@ struct MainView: View {
     var backgroundColor: Color {
         switch zoneStatus {
         case .unknown: return Color(.systemBackground)
-        case .tooLow: return Color.blue.opacity(0.2)
-        case .inZone: return Color.green.opacity(0.2)
+        case .tooLow: return Color.yellow.opacity(0.25)
+        case .inZone: return Color.blue.opacity(0.2)
         case .tooHigh: return Color.red.opacity(0.2)
         }
     }
@@ -58,7 +58,7 @@ struct MainView: View {
                                 .foregroundColor(.secondary)
                             Text(formatTime(zone2Seconds))
                                 .font(.system(size: 36, weight: .bold, design: .monospaced))
-                                .foregroundColor(.green)
+                                .foregroundColor(.blue)
                         }
                         
                         Spacer()
@@ -195,8 +195,8 @@ enum ZoneStatus {
     var color: Color {
         switch self {
         case .unknown: return .gray
-        case .tooLow: return .blue
-        case .inZone: return .green
+        case .tooLow: return .yellow
+        case .inZone: return .blue
         case .tooHigh: return .red
         }
     }

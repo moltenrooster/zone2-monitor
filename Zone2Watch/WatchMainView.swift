@@ -26,11 +26,11 @@ struct WatchMainView: View {
         }
         let bpm = Int(hr)
         if bpm < zone2Range.low {
-            return (.blue, "PUSH HARDER")
+            return (.yellow, "PUSH HARDER")
         } else if bpm > zone2Range.high {
             return (.red, "SLOW DOWN")
         } else {
-            return (.green, "PERFECT")
+            return (.blue, "PERFECT")
         }
     }
     
@@ -72,7 +72,7 @@ struct WatchMainView: View {
                 VStack(spacing: 12) {
                     Image(systemName: "heart.fill")
                         .font(.system(size: 40))
-                        .foregroundColor(.green)
+                        .foregroundColor(.blue)
                     
                     Text("Zone 2")
                         .font(.system(size: 20, weight: .bold))
@@ -90,10 +90,10 @@ struct WatchMainView: View {
                     }) {
                         Text("START")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
-                            .background(Color.green)
+                            .background(Color.blue)
                             .cornerRadius(10)
                     }
                     .buttonStyle(.plain)
