@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0252D4E7FC7C5DA7E6A3B4B8 /* Zone2WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A1FB6D3CB2E572A0FC4A4 /* Zone2WatchApp.swift */; };
 		088018CAB779979F5D5C7877 /* Zone2MonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C09F1849DB599CCFC85375 /* Zone2MonitorApp.swift */; };
+		121970BF029CA9AE0E41216A /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D543582493FCC1B014CC78AC /* PermissionsView.swift */; };
 		1C8DAA668F22D23C7BBEDDF2 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A35CE04ACCF475097426E4B /* UserSettings.swift */; };
 		21201BE1539EF8DAAA0E4A63 /* WatchWorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8822D21B1D4C155E158CD830 /* WatchWorkoutManager.swift */; };
 		2F610E23D5925A37C3962CC4 /* above_zone.wav in Resources */ = {isa = PBXBuildFile; fileRef = A55AF3EB1380375C47DA2ACB /* above_zone.wav */; };
@@ -62,6 +63,7 @@
 		A55AF3EB1380375C47DA2ACB /* above_zone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = above_zone.wav; sourceTree = "<group>"; };
 		B52A1FB6D3CB2E572A0FC4A4 /* Zone2WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zone2WatchApp.swift; sourceTree = "<group>"; };
 		B80FCAD01B3AEB6CC84CEB07 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D543582493FCC1B014CC78AC /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
 		DF1D66262E346F42797408AC /* Zone2Monitor.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Zone2Monitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6B69DC43751EDFA9F094A40 /* WatchMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMainView.swift; sourceTree = "<group>"; };
 		F4F3BAC5B34F423DF0CCB39C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				569C9A50565300CC000B78AF /* Info.plist */,
 				76A40A78A621C8808FC3E99D /* MainView.swift */,
 				4FA7D787525CDE4144FB1EB1 /* OnboardingView.swift */,
+				D543582493FCC1B014CC78AC /* PermissionsView.swift */,
 				B80FCAD01B3AEB6CC84CEB07 /* SettingsView.swift */,
 				4A35CE04ACCF475097426E4B /* UserSettings.swift */,
 				407090B956F9DF9C778475BC /* Zone2Monitor.entitlements */,
@@ -222,6 +225,7 @@
 				3CED9D688C284A51D7A55ABE /* HeartRateManager.swift in Sources */,
 				84133EB4184D3EF780E89485 /* MainView.swift in Sources */,
 				D36114DEBD87AA29D3E3E902 /* OnboardingView.swift in Sources */,
+				121970BF029CA9AE0E41216A /* PermissionsView.swift in Sources */,
 				B8DC1AED899773B7C9991965 /* SettingsView.swift in Sources */,
 				1C8DAA668F22D23C7BBEDDF2 /* UserSettings.swift in Sources */,
 				088018CAB779979F5D5C7877 /* Zone2MonitorApp.swift in Sources */,
