@@ -2,13 +2,15 @@ import Foundation
 import HealthKit
 import Combine
 
-class HeartRateManager: ObservableObject {
+class HeartRateManager: NSObject, ObservableObject {
     private let healthStore = HKHealthStore()
+    private var workoutSession: HKWorkoutSession?
+    private var workoutBuilder: HKLiveWorkoutBuilder?
     private var heartRateQuery: HKAnchoredObjectQuery?
     
     @Published var heartRate: Int?
     @Published var isMonitoring = false
-    @Published var connectionStatus: String = "Not started"
+    @Published var connectionStatus: String = "Ready"
     @Published var lastUpdate: Date?
     
     var isHealthKitAvailable: Bool {
@@ -23,14 +25,17 @@ class HeartRateManager: ObservableObject {
         }
         
         let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
-        let typesToRead: Set<HKObjectType> = [heartRateType]
+        let workoutType = HKObjectType.workoutType()
         
-        healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
+        let typesToRead: Set<HKObjectType> = [heartRateType, workoutType]
+        let typesToWrite: Set<HKSampleType> = [heartRateType, workoutType]
+        
+        healthStore.requestAuthorization(toShare: typesToWrite, read: typesToRead) { success, error in
             DispatchQueue.main.async {
                 if success {
                     self.connectionStatus = "HealthKit authorized"
                 } else {
-                    self.connectionStatus = "Authorization denied"
+                    self.connectionStatus = "Please allow Health access in Settings"
                 }
                 completion(success)
             }
@@ -39,89 +44,111 @@ class HeartRateManager: ObservableObject {
     
     func startMonitoring() {
         guard isHealthKitAvailable else {
-            connectionStatus = "HealthKit not available on this device"
+            connectionStatus = "HealthKit not available"
             return
         }
         
-        isMonitoring = true
-        connectionStatus = "Connecting to HealthKit..."
+        connectionStatus = "Starting workout session..."
         
-        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+        // Start a workout session to get live heart rate
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = .other
+        configuration.locationType = .indoor
         
-        // Query for the most recent heart rate
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
-        
-        // First, get the most recent heart rate
-        let recentQuery = HKSampleQuery(
-            sampleType: heartRateType,
-            predicate: nil,
-            limit: 1,
-            sortDescriptors: [sortDescriptor]
-        ) { [weak self] _, samples, error in
-            guard let self = self else { return }
+        do {
+            workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: configuration)
+            workoutBuilder = workoutSession?.associatedWorkoutBuilder()
             
-            DispatchQueue.main.async {
-                if let sample = samples?.first as? HKQuantitySample {
-                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
-                    let value = sample.quantity.doubleValue(for: heartRateUnit)
-                    self.heartRate = Int(value)
-                    self.lastUpdate = sample.startDate
-                    self.connectionStatus = "Reading from HealthKit"
-                } else {
-                    self.connectionStatus = "No heart rate data found. Start a workout with your Polar!"
+            workoutBuilder?.dataSource = HKLiveWorkoutDataSource(
+                healthStore: healthStore,
+                workoutConfiguration: configuration
+            )
+            
+            workoutSession?.delegate = self
+            workoutBuilder?.delegate = self
+            
+            let startDate = Date()
+            workoutSession?.startActivity(with: startDate)
+            
+            workoutBuilder?.beginCollection(withStart: startDate) { success, error in
+                DispatchQueue.main.async {
+                    if success {
+                        self.isMonitoring = true
+                        self.connectionStatus = "Waiting for heart rate..."
+                    } else {
+                        self.connectionStatus = "Failed to start: \(error?.localizedDescription ?? "Unknown")"
+                    }
                 }
             }
-        }
-        
-        healthStore.execute(recentQuery)
-        
-        // Set up anchored query for live updates
-        let anchorDate = Date().addingTimeInterval(-60) // Look back 1 minute
-        let predicate = HKQuery.predicateForSamples(withStart: anchorDate, end: nil, options: .strictStartDate)
-        
-        heartRateQuery = HKAnchoredObjectQuery(
-            type: heartRateType,
-            predicate: predicate,
-            anchor: nil,
-            limit: HKObjectQueryNoLimit
-        ) { [weak self] query, samples, deletedObjects, anchor, error in
-            self?.processHeartRateSamples(samples)
-        }
-        
-        heartRateQuery?.updateHandler = { [weak self] query, samples, deletedObjects, anchor, error in
-            self?.processHeartRateSamples(samples)
-        }
-        
-        if let query = heartRateQuery {
-            healthStore.execute(query)
-            DispatchQueue.main.async {
-                self.connectionStatus = "Monitoring for live heart rate..."
-            }
-        }
-    }
-    
-    private func processHeartRateSamples(_ samples: [HKSample]?) {
-        guard let heartRateSamples = samples as? [HKQuantitySample],
-              let mostRecent = heartRateSamples.last else { return }
-        
-        let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
-        let value = mostRecent.quantity.doubleValue(for: heartRateUnit)
-        
-        DispatchQueue.main.async {
-            self.heartRate = Int(value)
-            self.lastUpdate = mostRecent.startDate
-            self.connectionStatus = "Live from HealthKit"
+        } catch {
+            connectionStatus = "Error: \(error.localizedDescription)"
         }
     }
     
     func stopMonitoring() {
-        if let query = heartRateQuery {
-            healthStore.stop(query)
-            heartRateQuery = nil
-        }
+        workoutSession?.end()
+        
         DispatchQueue.main.async {
             self.isMonitoring = false
             self.connectionStatus = "Stopped"
+            self.heartRate = nil
         }
+    }
+}
+
+// MARK: - HKWorkoutSessionDelegate
+extension HeartRateManager: HKWorkoutSessionDelegate {
+    func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
+        DispatchQueue.main.async {
+            switch toState {
+            case .running:
+                self.connectionStatus = "Workout active - reading heart rate..."
+            case .ended:
+                self.workoutBuilder?.endCollection(withEnd: date) { success, error in
+                    self.workoutBuilder?.finishWorkout { workout, error in
+                        DispatchQueue.main.async {
+                            self.isMonitoring = false
+                            self.connectionStatus = "Workout ended"
+                        }
+                    }
+                }
+            case .paused:
+                self.connectionStatus = "Paused"
+            default:
+                break
+            }
+        }
+    }
+    
+    func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
+        DispatchQueue.main.async {
+            self.connectionStatus = "Error: \(error.localizedDescription)"
+            self.isMonitoring = false
+        }
+    }
+}
+
+// MARK: - HKLiveWorkoutBuilderDelegate
+extension HeartRateManager: HKLiveWorkoutBuilderDelegate {
+    func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
+        for type in collectedTypes {
+            guard let quantityType = type as? HKQuantityType,
+                  quantityType == HKQuantityType.quantityType(forIdentifier: .heartRate) else { continue }
+            
+            let statistics = workoutBuilder.statistics(for: quantityType)
+            let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+            
+            if let value = statistics?.mostRecentQuantity()?.doubleValue(for: heartRateUnit) {
+                DispatchQueue.main.async {
+                    self.heartRate = Int(value)
+                    self.lastUpdate = Date()
+                    self.connectionStatus = "❤️ Live from Polar"
+                }
+            }
+        }
+    }
+    
+    func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
+        // Handle events if needed
     }
 }
