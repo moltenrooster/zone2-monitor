@@ -27,9 +27,9 @@ struct MainView: View {
     var backgroundColor: Color {
         switch zoneStatus {
         case .unknown: return Color(.systemBackground)
-        case .tooLow: return Color.blue.opacity(0.15)
-        case .inZone: return Color.green.opacity(0.15)
-        case .tooHigh: return Color.red.opacity(0.15)
+        case .tooLow: return Color.blue.opacity(0.2)
+        case .inZone: return Color.green.opacity(0.2)
+        case .tooHigh: return Color.red.opacity(0.2)
         }
     }
     
@@ -38,8 +38,8 @@ struct MainView: View {
             ZStack {
                 backgroundColor.ignoresSafeArea()
                 
-                VStack(spacing: 30) {
-                    // Settings button
+                VStack(spacing: 20) {
+                    // Top bar with settings
                     HStack {
                         Spacer()
                         NavigationLink(destination: SettingsView().environmentObject(settings)) {
@@ -66,76 +66,54 @@ struct MainView: View {
                     
                     Spacer()
                     
-                    // Heart rate display
+                    // Main heart rate display
                     VStack(spacing: 16) {
-                        if heartRateManager.isMonitoring {
+                        if let hr = heartRateManager.heartRate {
                             // Zone message
                             Text(zoneStatus.message)
-                                .font(.title2)
-                                .fontWeight(.bold)
+                                .font(.system(size: 28, weight: .bold))
                                 .foregroundColor(zoneStatus.color)
                             
-                            // BPM
-                            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                                Text(heartRateManager.heartRate != nil ? "\(heartRateManager.heartRate!)" : "--")
-                                    .font(.system(size: 120, weight: .bold, design: .rounded))
-                                    .foregroundColor(zoneStatus.color)
-                                
-                                Text("BPM")
-                                    .font(.title)
-                                    .foregroundColor(.secondary)
-                            }
+                            // Big BPM number
+                            Text("\(hr)")
+                                .font(.system(size: 140, weight: .bold, design: .rounded))
+                                .foregroundColor(zoneStatus.color)
                             
-                            // Status
-                            Text(heartRateManager.connectionStatus)
-                                .font(.caption)
+                            Text("BPM")
+                                .font(.title)
                                 .foregroundColor(.secondary)
-                            
-                            if let lastUpdate = heartRateManager.lastUpdate {
-                                Text("Updated: \(lastUpdate, style: .relative) ago")
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                            }
                         } else {
-                            // Not monitoring
-                            Image(systemName: "heart.slash")
-                                .font(.system(size: 80))
+                            // Connecting state
+                            Image(systemName: "heart.fill")
+                                .font(.system(size: 60))
                                 .foregroundColor(.gray)
+                                .opacity(0.5)
                             
-                            Text("Tap Start to begin")
+                            ProgressView()
+                                .scaleEffect(1.5)
+                                .padding()
+                            
+                            Text(heartRateManager.connectionStatus)
                                 .font(.headline)
                                 .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
                         }
                     }
                     
                     Spacer()
                     
-                    // Start/Stop button
-                    Button(action: toggleMonitoring) {
-                        HStack {
-                            Image(systemName: heartRateManager.isMonitoring ? "stop.fill" : "play.fill")
-                            Text(heartRateManager.isMonitoring ? "Stop" : "Start")
-                                .fontWeight(.semibold)
-                        }
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(heartRateManager.isMonitoring ? Color.red : Color.green)
-                        .cornerRadius(16)
-                    }
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 40)
+                    // Status bar at bottom
+                    Text(heartRateManager.connectionStatus)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.bottom, 20)
                 }
             }
             .navigationBarHidden(true)
         }
-    }
-    
-    private func toggleMonitoring() {
-        if heartRateManager.isMonitoring {
-            heartRateManager.stopMonitoring()
-        } else {
+        .onAppear {
+            // Auto-start scanning when app opens
             heartRateManager.startScanning()
         }
     }
@@ -146,7 +124,7 @@ enum ZoneStatus {
     
     var message: String {
         switch self {
-        case .unknown: return "Waiting..."
+        case .unknown: return ""
         case .tooLow: return "⬆️ PUSH HARDER"
         case .inZone: return "✅ PERFECT"
         case .tooHigh: return "⬇️ SLOW DOWN"
