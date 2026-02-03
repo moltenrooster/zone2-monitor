@@ -9,10 +9,15 @@ struct MainView: View {
     @State private var timer: Timer?
     
     var zone2Range: (low: Int, high: Int) {
-        let maxHR = 220 - settings.userAge
-        let low = Int(Double(maxHR) * 0.60)
-        let high = Int(Double(maxHR) * 0.70)
-        return (low, high)
+        // Use custom values if set, otherwise calculate from age
+        if settings.hasCustomZone && settings.zone2Low > 0 && settings.zone2High > 0 {
+            return (settings.zone2Low, settings.zone2High)
+        } else {
+            let maxHR = 220 - settings.userAge
+            let low = Int(Double(maxHR) * 0.60)
+            let high = Int(Double(maxHR) * 0.70)
+            return (low, high)
+        }
     }
     
     var zoneStatus: ZoneStatus {
