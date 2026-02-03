@@ -30,6 +30,9 @@ targets:
       DEVELOPMENT_TEAM: ""
     entitlements:
       path: Zone2Monitor/Zone2Monitor.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.background-delivery: true
     dependencies:
       - target: Zone2Watch
         embed: true
