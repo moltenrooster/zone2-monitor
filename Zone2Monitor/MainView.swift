@@ -4,6 +4,11 @@ struct MainView: View {
     @EnvironmentObject var settings: UserSettings
     @StateObject private var heartRateManager = HeartRateManager()
     
+    // Timers
+    @State private var zone2Seconds: Int = 0
+    @State private var totalSeconds: Int = 0
+    @State private var timer: Timer?
+    
     var zone2Range: (low: Int, high: Int) {
         let maxHR = 220 - settings.userAge
         let low = Int(Double(maxHR) * 0.60)
@@ -38,10 +43,21 @@ struct MainView: View {
             ZStack {
                 backgroundColor.ignoresSafeArea()
                 
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     // Top bar with settings
                     HStack {
+                        // Zone 2 time (main metric)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("IN ZONE")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text(formatTime(zone2Seconds))
+                                .font(.system(size: 32, weight: .bold, design: .monospaced))
+                                .foregroundColor(.green)
+                        }
+                        
                         Spacer()
+                        
                         NavigationLink(destination: SettingsView().environmentObject(settings)) {
                             Image(systemName: "gearshape.fill")
                                 .font(.title2)
@@ -60,27 +76,27 @@ struct MainView: View {
                             .font(.headline)
                             .foregroundColor(.secondary)
                         Text("\(zone2Range.low) - \(zone2Range.high)")
-                            .font(.title2)
+                            .font(.title3)
                             .fontWeight(.medium)
                     }
                     
                     Spacer()
                     
                     // Main heart rate display
-                    VStack(spacing: 16) {
+                    VStack(spacing: 12) {
                         if let hr = heartRateManager.heartRate {
                             // Zone message
                             Text(zoneStatus.message)
-                                .font(.system(size: 28, weight: .bold))
+                                .font(.system(size: 24, weight: .bold))
                                 .foregroundColor(zoneStatus.color)
                             
                             // Big BPM number
                             Text("\(hr)")
-                                .font(.system(size: 140, weight: .bold, design: .rounded))
+                                .font(.system(size: 130, weight: .bold, design: .rounded))
                                 .foregroundColor(zoneStatus.color)
                             
                             Text("BPM")
-                                .font(.title)
+                                .font(.title2)
                                 .foregroundColor(.secondary)
                         } else {
                             // Connecting state
@@ -103,7 +119,29 @@ struct MainView: View {
                     
                     Spacer()
                     
-                    // Status bar at bottom
+                    // Bottom stats
+                    HStack(spacing: 40) {
+                        VStack(spacing: 4) {
+                            Text("TOTAL")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text(formatTime(totalSeconds))
+                                .font(.system(size: 20, weight: .semibold, design: .monospaced))
+                        }
+                        
+                        // Reset button
+                        Button(action: resetTimers) {
+                            Image(systemName: "arrow.counterclockwise")
+                                .font(.title2)
+                                .foregroundColor(.secondary)
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .clipShape(Circle())
+                        }
+                    }
+                    .padding(.bottom, 10)
+                    
+                    // Connection status
                     Text(heartRateManager.connectionStatus)
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -113,9 +151,37 @@ struct MainView: View {
             .navigationBarHidden(true)
         }
         .onAppear {
-            // Auto-start scanning when app opens
             heartRateManager.startScanning()
+            startTimer()
         }
+        .onDisappear {
+            timer?.invalidate()
+        }
+    }
+    
+    private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            // Only count if we have a heart rate reading
+            if heartRateManager.heartRate != nil {
+                totalSeconds += 1
+                
+                // Count zone 2 time (in zone or above)
+                if zoneStatus == .inZone || zoneStatus == .tooHigh {
+                    zone2Seconds += 1
+                }
+            }
+        }
+    }
+    
+    private func resetTimers() {
+        zone2Seconds = 0
+        totalSeconds = 0
+    }
+    
+    private func formatTime(_ seconds: Int) -> String {
+        let mins = seconds / 60
+        let secs = seconds % 60
+        return String(format: "%d:%02d", mins, secs)
     }
 }
 
