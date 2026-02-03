@@ -3,435 +3,476 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1000001 /* Zone2MonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001; };
-		A1000002 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002; };
-		A1000003 /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000003; };
-		A1000004 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004; };
-		A1000005 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000005; };
-		A1000006 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006; };
-		B1000001 /* Zone2WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000001; };
-		B1000002 /* WatchMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000002; };
-		B1000003 /* WatchWorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000003; };
+		0252D4E7FC7C5DA7E6A3B4B8 /* Zone2WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A1FB6D3CB2E572A0FC4A4 /* Zone2WatchApp.swift */; };
+		088018CAB779979F5D5C7877 /* Zone2MonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C09F1849DB599CCFC85375 /* Zone2MonitorApp.swift */; };
+		1C8DAA668F22D23C7BBEDDF2 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A35CE04ACCF475097426E4B /* UserSettings.swift */; };
+		21201BE1539EF8DAAA0E4A63 /* WatchWorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8822D21B1D4C155E158CD830 /* WatchWorkoutManager.swift */; };
+		2F610E23D5925A37C3962CC4 /* above_zone.wav in Resources */ = {isa = PBXBuildFile; fileRef = A55AF3EB1380375C47DA2ACB /* above_zone.wav */; };
+		3CED9D688C284A51D7A55ABE /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A0FC30F0089B665FA1C8BC /* HeartRateManager.swift */; };
+		4FAE5BDEEE4D22A4010C3FC3 /* Zone2Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 75EF6044E8E099A2315A13B6 /* Zone2Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5826BA3C02B8846B4A925C11 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 1F317713546488E0C6025359 /* Sounds */; };
+		81D9B9215DA122336AC0147C /* below_zone.wav in Resources */ = {isa = PBXBuildFile; fileRef = 211A647E6D75E9FE9FEF468A /* below_zone.wav */; };
+		84133EB4184D3EF780E89485 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A40A78A621C8808FC3E99D /* MainView.swift */; };
+		B8DC1AED899773B7C9991965 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80FCAD01B3AEB6CC84CEB07 /* SettingsView.swift */; };
+		C817CC0F72CB02771B3F521A /* WatchMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B69DC43751EDFA9F094A40 /* WatchMainView.swift */; };
+		D36114DEBD87AA29D3E3E902 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7D787525CDE4144FB1EB1 /* OnboardingView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		368631762FF3228E76343E29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D20AF1040100250F4E5151E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7470760A88B90139EC91A24;
+			remoteInfo = Zone2Watch;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4B4741442B5357A32E5C73F6 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				4FAE5BDEEE4D22A4010C3FC3 /* Zone2Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		A2000001 /* Zone2MonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zone2MonitorApp.swift; sourceTree = "<group>"; };
-		A2000002 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		A2000003 /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
-		A2000004 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		A2000005 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		A2000006 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
-		A2000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2000008 /* Zone2Monitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Zone2Monitor.entitlements; sourceTree = "<group>"; };
-		A3000001 /* Zone2Monitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zone2Monitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2000001 /* Zone2WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zone2WatchApp.swift; sourceTree = "<group>"; };
-		B2000002 /* WatchMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMainView.swift; sourceTree = "<group>"; };
-		B2000003 /* WatchWorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchWorkoutManager.swift; sourceTree = "<group>"; };
-		B2000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2000005 /* Zone2Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Zone2Watch.entitlements; sourceTree = "<group>"; };
-		B3000001 /* Zone2Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zone2Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F317713546488E0C6025359 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sounds; path = Zone2Watch/Sounds; sourceTree = SOURCE_ROOT; };
+		211A647E6D75E9FE9FEF468A /* below_zone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = below_zone.wav; sourceTree = "<group>"; };
+		27C09F1849DB599CCFC85375 /* Zone2MonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zone2MonitorApp.swift; sourceTree = "<group>"; };
+		2AFBACF4BBCAA5389DEC5014 /* Zone2Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Zone2Watch.entitlements; sourceTree = "<group>"; };
+		35A0FC30F0089B665FA1C8BC /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
+		407090B956F9DF9C778475BC /* Zone2Monitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Zone2Monitor.entitlements; sourceTree = "<group>"; };
+		4A35CE04ACCF475097426E4B /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		4FA7D787525CDE4144FB1EB1 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		569C9A50565300CC000B78AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		75EF6044E8E099A2315A13B6 /* Zone2Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zone2Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		76A40A78A621C8808FC3E99D /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		8822D21B1D4C155E158CD830 /* WatchWorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchWorkoutManager.swift; sourceTree = "<group>"; };
+		A55AF3EB1380375C47DA2ACB /* above_zone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = above_zone.wav; sourceTree = "<group>"; };
+		B52A1FB6D3CB2E572A0FC4A4 /* Zone2WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zone2WatchApp.swift; sourceTree = "<group>"; };
+		B80FCAD01B3AEB6CC84CEB07 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DF1D66262E346F42797408AC /* Zone2Monitor.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Zone2Monitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6B69DC43751EDFA9F094A40 /* WatchMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMainView.swift; sourceTree = "<group>"; };
+		F4F3BAC5B34F423DF0CCB39C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		A4000001 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B4000001 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
-		A5000001 = {
+		181BF20BEDB667AF2BF73FDC /* Zone2Watch */ = {
 			isa = PBXGroup;
 			children = (
-				A5000002 /* Zone2Monitor */,
-				B5000002 /* Zone2Watch */,
-				A5000003 /* Products */,
+				F4F3BAC5B34F423DF0CCB39C /* Info.plist */,
+				E6B69DC43751EDFA9F094A40 /* WatchMainView.swift */,
+				8822D21B1D4C155E158CD830 /* WatchWorkoutManager.swift */,
+				2AFBACF4BBCAA5389DEC5014 /* Zone2Watch.entitlements */,
+				B52A1FB6D3CB2E572A0FC4A4 /* Zone2WatchApp.swift */,
+				87A649C1C04F2FCD8F93A855 /* Sounds */,
+			);
+			path = Zone2Watch;
+			sourceTree = "<group>";
+		};
+		8672E41B582B138F0B8F787D = {
+			isa = PBXGroup;
+			children = (
+				1F317713546488E0C6025359 /* Sounds */,
+				ADFE5A3B59E4F85BE0EF998F /* Zone2Monitor */,
+				181BF20BEDB667AF2BF73FDC /* Zone2Watch */,
+				A135B8B169CC20EE542E56F5 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A5000002 /* Zone2Monitor */ = {
+		87A649C1C04F2FCD8F93A855 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				A2000001 /* Zone2MonitorApp.swift */,
-				A2000002 /* MainView.swift */,
-				A2000003 /* HeartRateManager.swift */,
-				A2000004 /* SettingsView.swift */,
-				A2000005 /* OnboardingView.swift */,
-				A2000006 /* UserSettings.swift */,
-				A2000007 /* Info.plist */,
-				A2000008 /* Zone2Monitor.entitlements */,
+				A55AF3EB1380375C47DA2ACB /* above_zone.wav */,
+				211A647E6D75E9FE9FEF468A /* below_zone.wav */,
 			);
-			path = Zone2Monitor;
+			path = Sounds;
 			sourceTree = "<group>";
 		};
-		A5000003 /* Products */ = {
+		A135B8B169CC20EE542E56F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A3000001 /* Zone2Monitor.app */,
-				B3000001 /* Zone2Watch.app */,
+				DF1D66262E346F42797408AC /* Zone2Monitor.app */,
+				75EF6044E8E099A2315A13B6 /* Zone2Watch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B5000002 /* Zone2Watch */ = {
+		ADFE5A3B59E4F85BE0EF998F /* Zone2Monitor */ = {
 			isa = PBXGroup;
 			children = (
-				B2000001 /* Zone2WatchApp.swift */,
-				B2000002 /* WatchMainView.swift */,
-				B2000003 /* WatchWorkoutManager.swift */,
-				B2000004 /* Info.plist */,
-				B2000005 /* Zone2Watch.entitlements */,
+				35A0FC30F0089B665FA1C8BC /* HeartRateManager.swift */,
+				569C9A50565300CC000B78AF /* Info.plist */,
+				76A40A78A621C8808FC3E99D /* MainView.swift */,
+				4FA7D787525CDE4144FB1EB1 /* OnboardingView.swift */,
+				B80FCAD01B3AEB6CC84CEB07 /* SettingsView.swift */,
+				4A35CE04ACCF475097426E4B /* UserSettings.swift */,
+				407090B956F9DF9C778475BC /* Zone2Monitor.entitlements */,
+				27C09F1849DB599CCFC85375 /* Zone2MonitorApp.swift */,
 			);
-			path = Zone2Watch;
+			path = Zone2Monitor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A6000001 /* Zone2Monitor */ = {
+		CBF9FE83360DA229E6209572 /* Zone2Monitor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7000003;
+			buildConfigurationList = AE716F27871730A1E2B84ACA /* Build configuration list for PBXNativeTarget "Zone2Monitor" */;
 			buildPhases = (
-				A4000002 /* Sources */,
-				A4000001 /* Frameworks */,
-				A4000003 /* Resources */,
+				A886DB07E6759CD907A516C0 /* Sources */,
+				4B4741442B5357A32E5C73F6 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C4B67E6E43D6ADC90047634B /* PBXTargetDependency */,
 			);
 			name = Zone2Monitor;
+			packageProductDependencies = (
+			);
 			productName = Zone2Monitor;
-			productReference = A3000001 /* Zone2Monitor.app */;
+			productReference = DF1D66262E346F42797408AC /* Zone2Monitor.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B6000001 /* Zone2Watch */ = {
+		F7470760A88B90139EC91A24 /* Zone2Watch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B7000003;
+			buildConfigurationList = FF434DF48AF31895BBA60469 /* Build configuration list for PBXNativeTarget "Zone2Watch" */;
 			buildPhases = (
-				B4000002 /* Sources */,
-				B4000001 /* Frameworks */,
-				B4000003 /* Resources */,
+				B6667C21D3BFA81D6302793B /* Sources */,
+				A450B72EADA6A52C94779AC9 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Zone2Watch;
+			packageProductDependencies = (
+			);
 			productName = Zone2Watch;
-			productReference = B3000001 /* Zone2Watch.app */;
+			productReference = 75EF6044E8E099A2315A13B6 /* Zone2Watch.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A8000001 /* Project object */ = {
+		D20AF1040100250F4E5151E7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
-					A6000001 = {
-						CreatedOnToolsVersion = 15.4;
+					CBF9FE83360DA229E6209572 = {
+						DevelopmentTeam = "";
 					};
-					B6000001 = {
-						CreatedOnToolsVersion = 15.4;
+					F7470760A88B90139EC91A24 = {
+						DevelopmentTeam = "";
 					};
 				};
 			};
-			buildConfigurationList = A7000001;
+			buildConfigurationList = AAC3B5FE0FF99938B8C70032 /* Build configuration list for PBXProject "Zone2Monitor" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
-			mainGroup = A5000001;
-			productRefGroup = A5000003 /* Products */;
+			mainGroup = 8672E41B582B138F0B8F787D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A6000001 /* Zone2Monitor */,
-				B6000001 /* Zone2Watch */,
+				CBF9FE83360DA229E6209572 /* Zone2Monitor */,
+				F7470760A88B90139EC91A24 /* Zone2Watch */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A4000003 /* Resources */ = {
+		A450B72EADA6A52C94779AC9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B4000003 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				5826BA3C02B8846B4A925C11 /* Sounds in Resources */,
+				2F610E23D5925A37C3962CC4 /* above_zone.wav in Resources */,
+				81D9B9215DA122336AC0147C /* below_zone.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A4000002 /* Sources */ = {
+		A886DB07E6759CD907A516C0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1000001 /* Zone2MonitorApp.swift in Sources */,
-				A1000002 /* MainView.swift in Sources */,
-				A1000003 /* HeartRateManager.swift in Sources */,
-				A1000004 /* SettingsView.swift in Sources */,
-				A1000005 /* OnboardingView.swift in Sources */,
-				A1000006 /* UserSettings.swift in Sources */,
+				3CED9D688C284A51D7A55ABE /* HeartRateManager.swift in Sources */,
+				84133EB4184D3EF780E89485 /* MainView.swift in Sources */,
+				D36114DEBD87AA29D3E3E902 /* OnboardingView.swift in Sources */,
+				B8DC1AED899773B7C9991965 /* SettingsView.swift in Sources */,
+				1C8DAA668F22D23C7BBEDDF2 /* UserSettings.swift in Sources */,
+				088018CAB779979F5D5C7877 /* Zone2MonitorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B4000002 /* Sources */ = {
+		B6667C21D3BFA81D6302793B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1000001 /* Zone2WatchApp.swift in Sources */,
-				B1000002 /* WatchMainView.swift in Sources */,
-				B1000003 /* WatchWorkoutManager.swift in Sources */,
+				C817CC0F72CB02771B3F521A /* WatchMainView.swift in Sources */,
+				21201BE1539EF8DAAA0E4A63 /* WatchWorkoutManager.swift in Sources */,
+				0252D4E7FC7C5DA7E6A3B4B8 /* Zone2WatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C4B67E6E43D6ADC90047634B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7470760A88B90139EC91A24 /* Zone2Watch */;
+			targetProxy = 368631762FF3228E76343E29 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		A7000002 /* Debug */ = {
+		402AA0B351B577FDF7210444 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Zone2Monitor/Zone2Monitor.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Zone2Monitor/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
+					"@executable_path/Frameworks",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moltenrooster.zone2monitor;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		A7000004 /* Release */ = {
+		436F7586C654B5C94B4474EC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				VALIDATE_PRODUCT = YES;
+				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
 		};
-		A7000005 /* Debug */ = {
+		765D42C544A5AAEE6A3398F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Zone2Watch/Zone2Watch.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Zone2Watch/Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moltenrooster.zone2monitor.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		77C07AA59C41434AB69C23FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Zone2Monitor/Zone2Monitor.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Zone2Monitor/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Zone 2";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Zone 2 Monitor needs access to your heart rate data to show your current heart rate during workouts.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Zone 2 Monitor needs access to HealthKit to record your workout sessions.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltenrooster.zone2monitor;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Debug;
+			name = Release;
 		};
-		A7000006 /* Release */ = {
+		C7547E36343421D46C379AC9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Zone2Monitor/Zone2Monitor.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = Zone2Watch/Zone2Watch.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Zone2Monitor/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Zone 2";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Zone 2 Monitor needs access to your heart rate data to show your current heart rate during workouts.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Zone 2 Monitor needs access to HealthKit to record your workout sessions.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Zone2Watch/Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moltenrooster.zone2monitor.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		D162FB8C9EE2EE1243CB701F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moltenrooster.zone2monitor;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		B7000005 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Zone2Watch/Zone2Watch.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Zone2Watch/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Zone 2";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Zone 2 needs access to your heart rate to monitor your training zone.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Zone 2 needs to record your workout sessions.";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.moltenrooster.zone2monitor;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moltenrooster.zone2monitor.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
-		};
-		B7000006 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Zone2Watch/Zone2Watch.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Zone2Watch/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Zone 2";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Zone 2 needs access to your heart rate to monitor your training zone.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Zone 2 needs to record your workout sessions.";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.moltenrooster.zone2monitor;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moltenrooster.zone2monitor.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
-			};
-			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A7000001 /* Build configuration list for PBXProject */ = {
+		AAC3B5FE0FF99938B8C70032 /* Build configuration list for PBXProject "Zone2Monitor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A7000002 /* Debug */,
-				A7000004 /* Release */,
+				D162FB8C9EE2EE1243CB701F /* Debug */,
+				436F7586C654B5C94B4474EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		A7000003 /* Build configuration list for PBXNativeTarget */ = {
+		AE716F27871730A1E2B84ACA /* Build configuration list for PBXNativeTarget "Zone2Monitor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A7000005 /* Debug */,
-				A7000006 /* Release */,
+				402AA0B351B577FDF7210444 /* Debug */,
+				77C07AA59C41434AB69C23FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		B7000003 /* Build configuration list for PBXNativeTarget */ = {
+		FF434DF48AF31895BBA60469 /* Build configuration list for PBXNativeTarget "Zone2Watch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B7000005 /* Debug */,
-				B7000006 /* Release */,
+				C7547E36343421D46C379AC9 /* Debug */,
+				765D42C544A5AAEE6A3398F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = A8000001 /* Project object */;
+	rootObject = D20AF1040100250F4E5151E7 /* Project object */;
 }

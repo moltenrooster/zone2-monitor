@@ -22,3 +22,27 @@ targets:
       DEVELOPMENT_TEAM: ""
     entitlements:
       path: Zone2Monitor/Zone2Monitor.entitlements
+    dependencies:
+      - target: Zone2Watch
+        embed: true
+  
+  Zone2Watch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: Zone2Watch
+        excludes:
+          - "**/.DS_Store"
+      - path: Zone2Watch/Sounds
+        type: folder
+    info:
+      path: Zone2Watch/Info.plist
+    settings:
+      INFOPLIST_FILE: Zone2Watch/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.moltenrooster.zone2monitor.watchkitapp
+      MARKETING_VERSION: "1.0"
+      CURRENT_PROJECT_VERSION: "1"
+      DEVELOPMENT_TEAM: ""
+      WATCHOS_DEPLOYMENT_TARGET: "9.0"
+    entitlements:
+      path: Zone2Watch/Zone2Watch.entitlements

@@ -18,11 +18,5 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>Zone 2 needs to read your heart rate to show your training zone.</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Zone 2 needs Bluetooth to connect to your heart rate monitor.</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Zone 2 needs Bluetooth to connect to your heart rate monitor.</string>
 </dict>
 </plist>
