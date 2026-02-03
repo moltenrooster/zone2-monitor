@@ -18,5 +18,13 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Zone2Monitor uses Bluetooth to connect to your heart rate monitor.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Zone2Monitor uses Bluetooth to connect to your heart rate monitor.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Zone2Monitor needs access to your heart rate data to track your Zone 2 training.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Zone2Monitor needs access to save your workout data.</string>
 </dict>
 </plist>

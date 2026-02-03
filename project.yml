@@ -14,6 +14,11 @@ targets:
       - Zone2Monitor
     info:
       path: Zone2Monitor/Info.plist
+      properties:
+        NSHealthShareUsageDescription: "Zone2Monitor needs access to your heart rate data to track your Zone 2 training."
+        NSHealthUpdateUsageDescription: "Zone2Monitor needs access to save your workout data."
+        NSBluetoothAlwaysUsageDescription: "Zone2Monitor uses Bluetooth to connect to your heart rate monitor."
+        NSBluetoothPeripheralUsageDescription: "Zone2Monitor uses Bluetooth to connect to your heart rate monitor."
     settings:
       INFOPLIST_FILE: Zone2Monitor/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.moltenrooster.zone2monitor
