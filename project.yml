@@ -37,6 +37,9 @@ targets:
         type: folder
     info:
       path: Zone2Watch/Info.plist
+      properties:
+        WKApplication: true
+        WKCompanionAppBundleIdentifier: com.moltenrooster.zone2monitor
     settings:
       INFOPLIST_FILE: Zone2Watch/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.moltenrooster.zone2monitor.watchkitapp
