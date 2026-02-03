@@ -4,9 +4,8 @@ struct MainView: View {
     @EnvironmentObject var settings: UserSettings
     @StateObject private var heartRateManager = HeartRateManager()
     
-    // Timers
+    // Timer for Zone 2+
     @State private var zone2Seconds: Int = 0
-    @State private var totalSeconds: Int = 0
     @State private var timer: Timer?
     
     var zone2Range: (low: Int, high: Int) {
@@ -46,13 +45,14 @@ struct MainView: View {
                 VStack(spacing: 16) {
                     // Top bar with settings
                     HStack {
-                        // Zone 2 time (main metric)
+                        // Zone 2+ time (main metric)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("IN ZONE")
+                            Text("TIME IN ZONE 2+")
                                 .font(.caption)
+                                .fontWeight(.semibold)
                                 .foregroundColor(.secondary)
                             Text(formatTime(zone2Seconds))
-                                .font(.system(size: 32, weight: .bold, design: .monospaced))
+                                .font(.system(size: 36, weight: .bold, design: .monospaced))
                                 .foregroundColor(.green)
                         }
                         
@@ -119,30 +119,19 @@ struct MainView: View {
                     
                     Spacer()
                     
-                    // Bottom stats
-                    HStack(spacing: 30) {
-                        VStack(spacing: 4) {
-                            Text("TOTAL")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text(formatTime(totalSeconds))
-                                .font(.system(size: 20, weight: .semibold, design: .monospaced))
+                    // Reset button
+                    Button(action: resetTimers) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.counterclockwise")
+                            Text("RESET")
+                                .fontWeight(.semibold)
                         }
-                        
-                        // Reset button - more prominent
-                        Button(action: resetTimers) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "arrow.counterclockwise")
-                                Text("RESET")
-                                    .fontWeight(.semibold)
-                            }
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 12)
-                            .background(Color.orange)
-                            .cornerRadius(25)
-                        }
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .background(Color.orange)
+                        .cornerRadius(25)
                     }
                     .padding(.bottom, 10)
                     
@@ -166,11 +155,8 @@ struct MainView: View {
     
     private func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            // Only count if we have a heart rate reading
+            // Only count if we have a heart rate reading and in Zone 2+
             if heartRateManager.heartRate != nil {
-                totalSeconds += 1
-                
-                // Count zone 2 time (in zone or above)
                 if zoneStatus == .inZone || zoneStatus == .tooHigh {
                     zone2Seconds += 1
                 }
@@ -180,7 +166,6 @@ struct MainView: View {
     
     private func resetTimers() {
         zone2Seconds = 0
-        totalSeconds = 0
     }
     
     private func formatTime(_ seconds: Int) -> String {
