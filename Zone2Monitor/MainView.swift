@@ -120,7 +120,7 @@ struct MainView: View {
                     Spacer()
                     
                     // Bottom stats
-                    HStack(spacing: 40) {
+                    HStack(spacing: 30) {
                         VStack(spacing: 4) {
                             Text("TOTAL")
                                 .font(.caption)
@@ -129,14 +129,19 @@ struct MainView: View {
                                 .font(.system(size: 20, weight: .semibold, design: .monospaced))
                         }
                         
-                        // Reset button
+                        // Reset button - more prominent
                         Button(action: resetTimers) {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.title2)
-                                .foregroundColor(.secondary)
-                                .padding()
-                                .background(Color(.systemGray6))
-                                .clipShape(Circle())
+                            HStack(spacing: 6) {
+                                Image(systemName: "arrow.counterclockwise")
+                                Text("RESET")
+                                    .fontWeight(.semibold)
+                            }
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .background(Color.orange)
+                            .cornerRadius(25)
                         }
                     }
                     .padding(.bottom, 10)
