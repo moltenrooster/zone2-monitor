@@ -2,168 +2,175 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var settings: UserSettings
-    @EnvironmentObject var heartRateManager: HeartRateManager
-    @State private var showSettings = false
-    @State private var heartBeat = false
+    @StateObject private var heartRateManager = HeartRateManager()
     
-    var zoneStatus: ZoneStatus {
-        let hr = heartRateManager.heartRate
-        if hr == 0 { return .noData }
-        if hr > settings.zone2High + 2 { return .tooHigh }
-        if hr < settings.zone2Low - 2 { return .tooLow }
-        return .inZone
+    var zone2Range: (low: Int, high: Int) {
+        let maxHR = 220 - settings.age
+        let low = Int(Double(maxHR) * 0.60)
+        let high = Int(Double(maxHR) * 0.70)
+        return (low, high)
     }
     
-    var statusColor: Color {
+    var zoneStatus: ZoneStatus {
+        guard let hr = heartRateManager.heartRate else {
+            return .unknown
+        }
+        if hr < zone2Range.low {
+            return .tooLow
+        } else if hr > zone2Range.high {
+            return .tooHigh
+        } else {
+            return .inZone
+        }
+    }
+    
+    var backgroundColor: Color {
         switch zoneStatus {
-        case .noData: return .gray
-        case .tooHigh: return .red
-        case .tooLow: return .yellow
-        case .inZone: return .green
+        case .unknown: return Color(.systemBackground)
+        case .tooLow: return Color.blue.opacity(0.15)
+        case .inZone: return Color.green.opacity(0.15)
+        case .tooHigh: return Color.red.opacity(0.15)
         }
     }
     
     var body: some View {
         NavigationView {
             ZStack {
-                // Background color based on zone
-                statusColor.opacity(0.15)
-                    .ignoresSafeArea()
+                backgroundColor.ignoresSafeArea()
                 
-                VStack(spacing: 20) {
-                    // Zone range display (top)
+                VStack(spacing: 30) {
+                    // Settings button
                     HStack {
                         Spacer()
-                        VStack(alignment: .trailing) {
-                            Text("Zone 2")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text("\(settings.zone2Low) - \(settings.zone2High)")
-                                .font(.headline)
-                                .foregroundColor(statusColor)
+                        NavigationLink(destination: SettingsView().environmentObject(settings)) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.title2)
+                                .foregroundColor(.primary)
+                                .padding()
+                                .background(Color(.systemBackground))
+                                .clipShape(Circle())
+                                .shadow(radius: 2)
                         }
                     }
                     .padding(.horizontal)
                     
+                    // Zone indicator
+                    VStack(spacing: 4) {
+                        Text("Zone 2")
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                        Text("\(zone2Range.low) - \(zone2Range.high)")
+                            .font(.title2)
+                            .fontWeight(.medium)
+                    }
+                    
                     Spacer()
                     
-                    // Main heart rate display
-                    if heartRateManager.isConnected {
-                        VStack(spacing: 16) {
-                            // Heart icon
-                            Image(systemName: "heart.fill")
-                                .font(.system(size: 60))
-                                .foregroundColor(statusColor)
-                                .scaleEffect(heartBeat ? 1.2 : 1.0)
-                                .animation(
-                                    Animation.easeInOut(duration: 0.3)
-                                        .repeatForever(autoreverses: true),
-                                    value: heartBeat
-                                )
-                                .onAppear { heartBeat = true }
-                            
-                            // Heart rate number
-                            Text("\(heartRateManager.heartRate)")
-                                .font(.system(size: 120, weight: .bold, design: .rounded))
-                                .foregroundColor(statusColor)
-                            
-                            Text("bpm")
+                    // Heart rate display
+                    VStack(spacing: 16) {
+                        if heartRateManager.isMonitoring {
+                            // Zone message
+                            Text(zoneStatus.message)
                                 .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(zoneStatus.color)
+                            
+                            // BPM
+                            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                                Text(heartRateManager.heartRate != nil ? "\(heartRateManager.heartRate!)" : "--")
+                                    .font(.system(size: 120, weight: .bold, design: .rounded))
+                                    .foregroundColor(zoneStatus.color)
+                                
+                                Text("BPM")
+                                    .font(.title)
+                                    .foregroundColor(.secondary)
+                            }
+                            
+                            // Status
+                            Text(heartRateManager.connectionStatus)
+                                .font(.caption)
                                 .foregroundColor(.secondary)
                             
-                            // Status message
-                            Text(statusMessage)
-                                .font(.headline)
-                                .foregroundColor(statusColor)
-                                .padding(.top, 8)
-                        }
-                    } else {
-                        // Connection UI
-                        VStack(spacing: 24) {
+                            if let lastUpdate = heartRateManager.lastUpdate {
+                                Text("Updated: \(lastUpdate, style: .relative) ago")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+                        } else {
+                            // Not monitoring
                             Image(systemName: "heart.slash")
                                 .font(.system(size: 80))
                                 .foregroundColor(.gray)
                             
-                            if heartRateManager.isScanning {
-                                VStack(spacing: 12) {
-                                    ProgressView()
-                                        .scaleEffect(1.5)
-                                    Text("Searching for heart rate monitor...")
-                                        .foregroundColor(.secondary)
-                                }
-                            } else {
-                                VStack(spacing: 12) {
-                                    Text("No heart rate monitor connected")
-                                        .foregroundColor(.secondary)
-                                    
-                                    Button(action: { heartRateManager.startScanning() }) {
-                                        Label("Connect", systemImage: "antenna.radiowaves.left.and.right")
-                                            .font(.headline)
-                                            .foregroundColor(.white)
-                                            .padding()
-                                            .background(Color.blue)
-                                            .cornerRadius(12)
-                                    }
-                                }
-                            }
-                            
-                            if let error = heartRateManager.errorMessage {
-                                Text(error)
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                            }
+                            Text("Tap Start to begin")
+                                .font(.headline)
+                                .foregroundColor(.secondary)
                         }
                     }
                     
                     Spacer()
                     
-                    // Device info (bottom)
-                    if heartRateManager.isConnected {
+                    // Start/Stop button
+                    Button(action: toggleMonitoring) {
                         HStack {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.green)
-                            Text(heartRateManager.deviceName)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            Spacer()
-                            
-                            Button("Disconnect") {
-                                heartRateManager.disconnect()
-                            }
-                            .font(.caption)
-                            .foregroundColor(.red)
+                            Image(systemName: heartRateManager.isMonitoring ? "stop.fill" : "play.fill")
+                            Text(heartRateManager.isMonitoring ? "Stop" : "Start")
+                                .fontWeight(.semibold)
                         }
-                        .padding(.horizontal)
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(heartRateManager.isMonitoring ? Color.red : Color.green)
+                        .cornerRadius(16)
                     }
-                }
-                .padding()
-            }
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gearshape")
-                    }
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 40)
                 }
             }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
+            .navigationBarHidden(true)
+        }
+        .onAppear {
+            heartRateManager.requestAuthorization { _ in }
         }
     }
     
-    var statusMessage: String {
-        switch zoneStatus {
-        case .noData: return "Waiting for data..."
-        case .tooHigh: return "Slow down! Above Zone 2"
-        case .tooLow: return "Pick it up! Below Zone 2"
-        case .inZone: return "Perfect! In Zone 2"
+    private func toggleMonitoring() {
+        if heartRateManager.isMonitoring {
+            heartRateManager.stopMonitoring()
+        } else {
+            heartRateManager.requestAuthorization { success in
+                if success {
+                    heartRateManager.startMonitoring()
+                }
+            }
         }
     }
 }
 
 enum ZoneStatus {
-    case noData, tooHigh, tooLow, inZone
+    case unknown, tooLow, inZone, tooHigh
+    
+    var message: String {
+        switch self {
+        case .unknown: return "Waiting..."
+        case .tooLow: return "⬆️ PUSH HARDER"
+        case .inZone: return "✅ PERFECT"
+        case .tooHigh: return "⬇️ SLOW DOWN"
+        }
+    }
+    
+    var color: Color {
+        switch self {
+        case .unknown: return .gray
+        case .tooLow: return .blue
+        case .inZone: return .green
+        case .tooHigh: return .red
+        }
+    }
+}
+
+#Preview {
+    MainView()
+        .environmentObject(UserSettings())
 }
