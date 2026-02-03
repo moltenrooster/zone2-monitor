@@ -5,7 +5,7 @@ struct MainView: View {
     @StateObject private var heartRateManager = HeartRateManager()
     
     var zone2Range: (low: Int, high: Int) {
-        let maxHR = 220 - settings.age
+        let maxHR = 220 - settings.userAge
         let low = Int(Double(maxHR) * 0.60)
         let high = Int(Double(maxHR) * 0.70)
         return (low, high)
