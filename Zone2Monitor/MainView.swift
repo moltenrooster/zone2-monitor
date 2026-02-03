@@ -130,29 +130,13 @@ struct MainView: View {
             }
             .navigationBarHidden(true)
         }
-        .onAppear {
-            heartRateManager.requestAuthorization { _ in }
-        }
     }
     
     private func toggleMonitoring() {
         if heartRateManager.isMonitoring {
             heartRateManager.stopMonitoring()
         } else {
-            heartRateManager.requestAuthorization { success in
-                if success {
-                    heartRateManager.startMonitoring()
-                } else {
-                    // Show alert if authorization failed
-                    print("HealthKit authorization failed")
-                }
-            }
-            // Start monitoring anyway to show status
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if !heartRateManager.isMonitoring {
-                    heartRateManager.startMonitoring()
-                }
-            }
+            heartRateManager.startScanning()
         }
     }
 }
