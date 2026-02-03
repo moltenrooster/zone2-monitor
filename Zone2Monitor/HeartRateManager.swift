@@ -38,7 +38,13 @@ class HeartRateManager: ObservableObject {
     }
     
     func startMonitoring() {
-        guard isHealthKitAvailable else { return }
+        guard isHealthKitAvailable else {
+            connectionStatus = "HealthKit not available on this device"
+            return
+        }
+        
+        isMonitoring = true
+        connectionStatus = "Connecting to HealthKit..."
         
         let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
         
@@ -54,12 +60,15 @@ class HeartRateManager: ObservableObject {
         ) { [weak self] _, samples, error in
             guard let self = self else { return }
             
-            if let sample = samples?.first as? HKQuantitySample {
-                let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
-                let value = sample.quantity.doubleValue(for: heartRateUnit)
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let sample = samples?.first as? HKQuantitySample {
+                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+                    let value = sample.quantity.doubleValue(for: heartRateUnit)
                     self.heartRate = Int(value)
                     self.lastUpdate = sample.startDate
+                    self.connectionStatus = "Reading from HealthKit"
+                } else {
+                    self.connectionStatus = "No heart rate data found. Start a workout with your Polar!"
                 }
             }
         }
@@ -86,8 +95,7 @@ class HeartRateManager: ObservableObject {
         if let query = heartRateQuery {
             healthStore.execute(query)
             DispatchQueue.main.async {
-                self.isMonitoring = true
-                self.connectionStatus = "Monitoring heart rate..."
+                self.connectionStatus = "Monitoring for live heart rate..."
             }
         }
     }

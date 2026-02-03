@@ -142,6 +142,15 @@ struct MainView: View {
             heartRateManager.requestAuthorization { success in
                 if success {
                     heartRateManager.startMonitoring()
+                } else {
+                    // Show alert if authorization failed
+                    print("HealthKit authorization failed")
+                }
+            }
+            // Start monitoring anyway to show status
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if !heartRateManager.isMonitoring {
+                    heartRateManager.startMonitoring()
                 }
             }
         }
