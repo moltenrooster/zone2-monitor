@@ -19,7 +19,10 @@ targets:
         NSHealthUpdateUsageDescription: "Zone2Monitor needs access to save your workout data."
         NSBluetoothAlwaysUsageDescription: "Zone2Monitor uses Bluetooth to connect to your heart rate monitor."
         NSBluetoothPeripheralUsageDescription: "Zone2Monitor uses Bluetooth to connect to your heart rate monitor."
+        UIRequiredDeviceCapabilities:
+          - healthkit
     settings:
+      CODE_SIGN_ENTITLEMENTS: Zone2Monitor/Zone2Monitor.entitlements
       INFOPLIST_FILE: Zone2Monitor/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.moltenrooster.zone2monitor
       MARKETING_VERSION: "1.0"
