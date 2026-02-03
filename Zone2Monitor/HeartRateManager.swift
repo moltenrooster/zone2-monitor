@@ -1,189 +1,168 @@
 import Foundation
+import HealthKit
 import CoreBluetooth
-import Combine
 
 class HeartRateManager: NSObject, ObservableObject {
-    private var centralManager: CBCentralManager!
-    private var heartRatePeripheral: CBPeripheral?
-    
-    // Standard Bluetooth Heart Rate Service UUID
-    private let heartRateServiceUUID = CBUUID(string: "180D")
-    private let heartRateMeasurementUUID = CBUUID(string: "2A37")
+    private let healthStore = HKHealthStore()
+    private var heartRateQuery: HKObserverQuery?
+    private var anchoredQuery: HKAnchoredObjectQuery?
     
     @Published var heartRate: Int?
     @Published var isMonitoring = false
-    @Published var connectionStatus: String = "Ready"
+    @Published var connectionStatus: String = "Starting..."
     @Published var lastUpdate: Date?
-    @Published var discoveredDevices: [CBPeripheral] = []
     
     override init() {
         super.init()
-        centralManager = CBCentralManager(delegate: self, queue: nil)
+    }
+    
+    var isHealthKitAvailable: Bool {
+        HKHealthStore.isHealthDataAvailable()
     }
     
     func startScanning() {
-        guard centralManager.state == .poweredOn else {
-            connectionStatus = "Bluetooth is off"
+        guard isHealthKitAvailable else {
+            connectionStatus = "HealthKit not available"
             return
         }
         
-        isMonitoring = true
-        connectionStatus = "Scanning for heart rate monitors..."
-        discoveredDevices = []
+        requestAuthorization()
+    }
+    
+    private func requestAuthorization() {
+        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+        let typesToRead: Set<HKObjectType> = [heartRateType]
         
-        // First, check for already-connected devices
-        let connectedPeripherals = centralManager.retrieveConnectedPeripherals(withServices: [heartRateServiceUUID])
+        connectionStatus = "Requesting HealthKit access..."
         
-        if !connectedPeripherals.isEmpty {
-            connectionStatus = "Found connected device!"
-            for peripheral in connectedPeripherals {
-                discoveredDevices.append(peripheral)
-                // Auto-connect to first found device
-                connectTo(peripheral)
-                return
-            }
-        }
-        
-        // If no connected devices, scan for new ones
-        centralManager.scanForPeripherals(withServices: [heartRateServiceUUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
-        
-        // Stop scanning after 10 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
-            if self?.heartRatePeripheral == nil {
-                self?.centralManager.stopScan()
-                if self?.discoveredDevices.isEmpty == true {
-                    self?.connectionStatus = "No heart rate monitors found. Make sure your Polar is on!"
+        healthStore.requestAuthorization(toShare: nil, read: typesToRead) { [weak self] success, error in
+            DispatchQueue.main.async {
+                if success {
+                    self?.startHeartRateQuery()
+                } else {
+                    self?.connectionStatus = "Please allow Health access in Settings → Privacy → Health → Zone 2"
                 }
             }
         }
     }
     
-    func connectTo(_ peripheral: CBPeripheral) {
-        heartRatePeripheral = peripheral
-        peripheral.delegate = self
-        centralManager.stopScan()
-        connectionStatus = "Connecting to \(peripheral.name ?? "device")..."
-        centralManager.connect(peripheral, options: nil)
+    private func startHeartRateQuery() {
+        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+        
+        isMonitoring = true
+        connectionStatus = "Connecting to HealthKit..."
+        
+        // Get most recent heart rate first
+        fetchMostRecentHeartRate()
+        
+        // Set up observer for new heart rate data
+        heartRateQuery = HKObserverQuery(sampleType: heartRateType, predicate: nil) { [weak self] query, completionHandler, error in
+            self?.fetchMostRecentHeartRate()
+            completionHandler()
+        }
+        
+        if let query = heartRateQuery {
+            healthStore.execute(query)
+        }
+        
+        // Also set up anchored query for real-time updates
+        let anchorDate = Date().addingTimeInterval(-60)
+        let predicate = HKQuery.predicateForSamples(withStart: anchorDate, end: nil, options: .strictStartDate)
+        
+        anchoredQuery = HKAnchoredObjectQuery(
+            type: heartRateType,
+            predicate: predicate,
+            anchor: nil,
+            limit: HKObjectQueryNoLimit
+        ) { [weak self] query, samples, deleted, anchor, error in
+            self?.processHeartRateSamples(samples)
+        }
+        
+        anchoredQuery?.updateHandler = { [weak self] query, samples, deleted, anchor, error in
+            self?.processHeartRateSamples(samples)
+        }
+        
+        if let query = anchoredQuery {
+            healthStore.execute(query)
+        }
+        
+        // Poll every 2 seconds as backup
+        startPolling()
+    }
+    
+    private var pollTimer: Timer?
+    
+    private func startPolling() {
+        pollTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            self?.fetchMostRecentHeartRate()
+        }
+    }
+    
+    private func fetchMostRecentHeartRate() {
+        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+        
+        // Only look at data from the last 30 seconds
+        let thirtySecondsAgo = Date().addingTimeInterval(-30)
+        let predicate = HKQuery.predicateForSamples(withStart: thirtySecondsAgo, end: nil, options: .strictStartDate)
+        
+        let query = HKSampleQuery(
+            sampleType: heartRateType,
+            predicate: predicate,
+            limit: 1,
+            sortDescriptors: [sortDescriptor]
+        ) { [weak self] _, samples, error in
+            self?.processHeartRateSamples(samples)
+        }
+        
+        healthStore.execute(query)
+    }
+    
+    private func processHeartRateSamples(_ samples: [HKSample]?) {
+        guard let heartRateSamples = samples as? [HKQuantitySample],
+              let mostRecent = heartRateSamples.first else {
+            DispatchQueue.main.async {
+                if self.heartRate == nil {
+                    self.connectionStatus = "Waiting for heart rate... Start a workout in Fitness app"
+                }
+            }
+            return
+        }
+        
+        let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+        let value = mostRecent.quantity.doubleValue(for: heartRateUnit)
+        let sampleDate = mostRecent.startDate
+        
+        DispatchQueue.main.async {
+            // Only update if this is newer data
+            if self.lastUpdate == nil || sampleDate > self.lastUpdate! {
+                self.heartRate = Int(value)
+                self.lastUpdate = sampleDate
+                
+                // Check how fresh the data is
+                let age = Date().timeIntervalSince(sampleDate)
+                if age < 5 {
+                    self.connectionStatus = "❤️ Live from HealthKit"
+                } else if age < 30 {
+                    self.connectionStatus = "❤️ Updated \(Int(age))s ago"
+                } else {
+                    self.connectionStatus = "⚠️ Data is \(Int(age))s old - is workout running?"
+                }
+            }
+        }
     }
     
     func stopMonitoring() {
-        centralManager.stopScan()
-        
-        if let peripheral = heartRatePeripheral {
-            centralManager.cancelPeripheralConnection(peripheral)
+        if let query = heartRateQuery {
+            healthStore.stop(query)
         }
+        if let query = anchoredQuery {
+            healthStore.stop(query)
+        }
+        pollTimer?.invalidate()
         
-        heartRatePeripheral = nil
         isMonitoring = false
         heartRate = nil
         connectionStatus = "Stopped"
-        discoveredDevices = []
-    }
-}
-
-// MARK: - CBCentralManagerDelegate
-extension HeartRateManager: CBCentralManagerDelegate {
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        switch central.state {
-        case .poweredOn:
-            connectionStatus = "Bluetooth ready"
-        case .poweredOff:
-            connectionStatus = "Turn on Bluetooth"
-        case .unauthorized:
-            connectionStatus = "Bluetooth not authorized"
-        case .unsupported:
-            connectionStatus = "Bluetooth not supported"
-        default:
-            connectionStatus = "Bluetooth unavailable"
-        }
-    }
-    
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
-        
-        // Add to discovered list if not already there
-        if !discoveredDevices.contains(where: { $0.identifier == peripheral.identifier }) {
-            discoveredDevices.append(peripheral)
-            connectionStatus = "Found: \(peripheral.name ?? "Unknown device")"
-            
-            // Auto-connect to Polar devices
-            if let name = peripheral.name?.lowercased(), name.contains("polar") {
-                connectTo(peripheral)
-            }
-        }
-    }
-    
-    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        connectionStatus = "Connected to \(peripheral.name ?? "device")!"
-        peripheral.discoverServices([heartRateServiceUUID])
-    }
-    
-    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        connectionStatus = "Failed to connect: \(error?.localizedDescription ?? "Unknown error")"
-        isMonitoring = false
-    }
-    
-    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        connectionStatus = "Disconnected"
-        heartRate = nil
-        
-        // Try to reconnect
-        if isMonitoring {
-            connectionStatus = "Reconnecting..."
-            centralManager.connect(peripheral, options: nil)
-        }
-    }
-}
-
-// MARK: - CBPeripheralDelegate
-extension HeartRateManager: CBPeripheralDelegate {
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        guard let services = peripheral.services else { return }
-        
-        for service in services {
-            if service.uuid == heartRateServiceUUID {
-                peripheral.discoverCharacteristics([heartRateMeasurementUUID], for: service)
-            }
-        }
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        guard let characteristics = service.characteristics else { return }
-        
-        for characteristic in characteristics {
-            if characteristic.uuid == heartRateMeasurementUUID {
-                peripheral.setNotifyValue(true, for: characteristic)
-                connectionStatus = "❤️ Live heart rate active"
-            }
-        }
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard characteristic.uuid == heartRateMeasurementUUID,
-              let data = characteristic.value else { return }
-        
-        let heartRateValue = parseHeartRate(from: data)
-        
-        DispatchQueue.main.async {
-            self.heartRate = heartRateValue
-            self.lastUpdate = Date()
-            self.connectionStatus = "❤️ Live from \(peripheral.name ?? "HRM")"
-        }
-    }
-    
-    private func parseHeartRate(from data: Data) -> Int {
-        let bytes = [UInt8](data)
-        guard !bytes.isEmpty else { return 0 }
-        
-        // First byte contains flags
-        let flags = bytes[0]
-        let is16Bit = (flags & 0x01) != 0
-        
-        if is16Bit && bytes.count >= 3 {
-            return Int(bytes[1]) | (Int(bytes[2]) << 8)
-        } else if bytes.count >= 2 {
-            return Int(bytes[1])
-        }
-        
-        return 0
     }
 }
