@@ -124,21 +124,23 @@ struct MainView: View {
                     
                     Spacer()
                     
-                    // Reset button
-                    Button(action: resetTimers) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "arrow.counterclockwise")
-                            Text("RESET")
-                                .fontWeight(.semibold)
+                    // Reset button (only show when timer > 0)
+                    if zone2Seconds > 0 {
+                        Button(action: resetTimers) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "arrow.counterclockwise")
+                                Text("RESET")
+                                    .fontWeight(.semibold)
+                            }
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                            .background(Color.orange)
+                            .cornerRadius(25)
                         }
-                        .font(.subheadline)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 12)
-                        .background(Color.orange)
-                        .cornerRadius(25)
+                        .padding(.bottom, 10)
                     }
-                    .padding(.bottom, 10)
                     
                     // Connection status
                     Text(heartRateManager.connectionStatus)
