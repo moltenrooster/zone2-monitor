@@ -121,9 +121,17 @@ class HeartRateManager: NSObject, ObservableObject {
     private func processHeartRateSamples(_ samples: [HKSample]?) {
         guard let heartRateSamples = samples as? [HKQuantitySample],
               let mostRecent = heartRateSamples.first else {
+            // No recent samples - check if data is stale
             DispatchQueue.main.async {
-                if self.heartRate == nil {
-                    self.connectionStatus = "Waiting for heart rate... Start a workout in Fitness app"
+                if let lastUpdate = self.lastUpdate {
+                    let age = Date().timeIntervalSince(lastUpdate)
+                    if age > 10 {
+                        // Data is stale - clear heart rate and show disconnected
+                        self.heartRate = nil
+                        self.connectionStatus = "📡 Signal lost - check HR monitor"
+                    }
+                } else {
+                    self.connectionStatus = "Waiting for heart rate..."
                 }
             }
             return
@@ -142,11 +150,22 @@ class HeartRateManager: NSObject, ObservableObject {
                 // Check how fresh the data is
                 let age = Date().timeIntervalSince(sampleDate)
                 if age < 5 {
-                    self.connectionStatus = "❤️ Live from HealthKit"
-                } else if age < 30 {
+                    self.connectionStatus = "❤️ Live"
+                } else if age < 10 {
                     self.connectionStatus = "❤️ Updated \(Int(age))s ago"
                 } else {
-                    self.connectionStatus = "⚠️ Data is \(Int(age))s old - is workout running?"
+                    // Data is getting stale
+                    self.heartRate = nil
+                    self.connectionStatus = "📡 Signal lost - check HR monitor"
+                }
+            } else {
+                // No new data - check staleness
+                if let lastUpdate = self.lastUpdate {
+                    let age = Date().timeIntervalSince(lastUpdate)
+                    if age > 10 {
+                        self.heartRate = nil
+                        self.connectionStatus = "📡 Signal lost - check HR monitor"
+                    }
                 }
             }
         }
